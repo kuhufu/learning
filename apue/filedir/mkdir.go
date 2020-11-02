@@ -1,3 +1,5 @@
+//+build linux
+
 package main
 
 import (
@@ -20,8 +22,6 @@ func main() {
 			continue
 		}
 	}
-
-
 
 	time.Sleep(time.Second * 10)
 }

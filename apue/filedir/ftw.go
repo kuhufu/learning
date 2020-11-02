@@ -17,13 +17,17 @@ var (
 	ntot   int //总文件数
 )
 
+var (
+	buf  = make([]byte, 8192)
+	stat = new(syscall.Stat_t)
+)
+
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Println("usage: ftw <pathname>")
 		return
 	}
 
-	stat := new(syscall.Stat_t)
 	err := syscall.Lstat(os.Args[1], stat)
 	if err != nil {
 		fmt.Println("lstat error:", os.Args[1], err)
@@ -51,7 +55,6 @@ func main() {
 }
 
 func myFtw(path string) {
-	stat := new(syscall.Stat_t)
 	err := syscall.Lstat(path, stat)
 	if err != nil {
 		fmt.Println("lstat error:", path, err)
@@ -71,7 +74,6 @@ func myFtw(path string) {
 	}
 
 	//读出目录下所有文件名
-	buf := make([]byte, 8192)
 	_, err = syscall.ReadDirent(dirfd, buf)
 	if err != nil {
 		fmt.Println("read directory error:", err)
